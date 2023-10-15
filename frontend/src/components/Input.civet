@@ -1,0 +1,12 @@
+type InputProps = Pick<HTMLInputElement, 'type'>
+
+interface Props extends Partial<InputProps> {
+  id: string
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  value: string | number
+}
+
+Input := ({ id, ...rest }: Props) =>
+  <input id={id} className="px-2 block bg-white border-slate-600 border-2 rounded-lg" {...rest} />
+
+export default Input

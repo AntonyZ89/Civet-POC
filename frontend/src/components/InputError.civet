@@ -1,0 +1,10 @@
+interface Props {
+  error?: string
+}
+
+InputError: React.FC<Props> := ({ error }) =>
+  error &&
+    <small className="text-red-400">
+      {error}
+
+export default InputError

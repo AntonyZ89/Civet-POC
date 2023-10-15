@@ -1,0 +1,28 @@
+import FormService from '../services/FormService.civet'
+import type { Form } from '../types/form.type.civet'
+
+Home := =>
+  [forms, setForms] := useState<Form[]> []
+
+  getList := =>
+    FormService.list()
+      |> await
+      |> .data
+      |> setForms;
+
+  useEffect => getList();, []
+
+  <div className={"bg-white space-y-3 rounded-lg p-3 container mx-auto w-full"}>
+    <h1 className={"text-3xl flex justify-between font-bold"}>
+      Forms
+
+      <NavLink to={"/form"}>
+        <Button>
+          Cadastrar
+
+    <div className="gap-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      {forms.map (form) => <FormCard form={form} key={form.id} />}
+    </div>
+      
+
+export default Home

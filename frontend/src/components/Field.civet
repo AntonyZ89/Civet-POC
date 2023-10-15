@@ -1,0 +1,16 @@
+interface Props {
+  label: string
+  error?: string
+}
+
+Field: React.FC<React.PropsWithChildren & Props> := (props) =>
+  { label, error, children } := props
+
+  <div>
+    <label className="block" htmlFor="name">
+      {label}
+      
+    {children}
+    <InputError error={error} />
+
+export default Field

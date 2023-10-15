@@ -1,0 +1,13 @@
+import api from './api.civet'
+type { CreateForm } from '../types/form.type.civet'
+
+function list
+  api.get('form')
+
+function send(state: CreateForm)
+  api.post('form', state)
+
+export default {
+  list,
+  send
+}

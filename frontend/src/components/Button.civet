@@ -1,0 +1,8 @@
+
+type ButtonProps = Partial<Pick<HTMLButtonElement, 'type'>>
+
+Button: React.FC<React.PropsWithChildren & ButtonProps> := ({ children, ...rest }) =>
+  <button className={"rounded-lg text-lg font-normal bg-slate-300 py-1 px-3"} {...rest}>
+    {children}
+
+export default Button

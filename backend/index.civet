@@ -1,0 +1,63 @@
+import express, { Response } from 'express'
+import cors from 'cors'
+import { PrismaClient } from '@prisma/client'
+import { z } from 'zod'
+
+prisma := new PrismaClient
+
+app := express();
+
+app
+  |> .use express.json()
+  |> .use cors({ origin: '*' }) 
+
+const formSchema = z.object(
+  name: z 
+          .string( required_error: 'Name is required' )
+          .min 1, 'Name is required'
+  email: z
+          .string( required_error: 'E-mail is required' )
+          .email()
+          .min(1, 'E-mail is required')
+  age: z
+        .number( required_error: 'Age is required' )
+        .min(14)
+)
+
+function parse(schema: z.Schema, value: unknown, res: Response) 
+  try 
+      schema.parse value
+  catch err
+    if err instanceof z.ZodError
+      errors := err.issues.reduce
+        (acc, { path: [target], message }) => 
+          acc[target] = message
+          acc
+        {} as Record<string, string>
+
+      res.status 400 |> .json { errors }
+
+    throw err
+
+/**
+ * Endpoints
+ */
+
+app.get
+  '/form',
+  (_, res) =>
+    prisma.form |> .findMany() |> await |> res.send
+
+app.post
+  '/form',
+  (req, res) =>
+    try
+      body := parse(formSchema, req.body, res);
+
+      prisma.form |> .create({ data: body }) |> await
+
+      res.status 201 |> .json { message: "Form has been sent successfully" }
+    catch e
+      console.error e
+
+app.listen 3000, => console.log 'Listen on :3000'
